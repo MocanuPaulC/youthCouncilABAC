@@ -1,12 +1,17 @@
 package be.kdg.youthcouncil.service.userService;
 
 import be.kdg.youthcouncil.controllers.mvc.viewModels.UserRegisterViewModel;
-import be.kdg.youthcouncil.domain.user.AuthenticationType;
-import be.kdg.youthcouncil.domain.user.Role;
-import be.kdg.youthcouncil.domain.user.User;
+import be.kdg.youthcouncil.domain.users.Authenticable;
+import be.kdg.youthcouncil.domain.users.AuthenticationType;
+import be.kdg.youthcouncil.domain.users.GeneralAdmin;
+import be.kdg.youthcouncil.domain.users.PlatformUser;
+import be.kdg.youthcouncil.domain.youthcouncil.subscriptions.YouthCouncilSubscription;
+import be.kdg.youthcouncil.exceptions.YouthCouncilSubscriptionNotFoundException;
+import be.kdg.youthcouncil.persistence.users.AdminRepository;
 import be.kdg.youthcouncil.exceptions.UserNotFound;
 import be.kdg.youthcouncil.exceptions.UsernameAlreadyExistsException;
-import be.kdg.youthcouncil.persistence.UserRepository;
+import be.kdg.youthcouncil.persistence.users.UserRepository;
+import be.kdg.youthcouncil.persistence.youthcouncil.subscriptions.YouthCouncilSubscriptionRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -18,12 +23,15 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 	private final ModelMapper modelMapper;
 	private final UserRepository userRepository;
+	private final AdminRepository adminRepository;
+	private final YouthCouncilSubscriptionRepository youthCouncilSubscriptionRepository;
 	private final BCryptPasswordEncoder passwordEncoder;
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -33,7 +41,7 @@ public class UserServiceImpl implements UserService {
 		logger.debug("Processing OAuth post login for user: " + email);
 
 		if (userRepository.findByEmail(email).isEmpty()) {
-			User newUser = new User();
+			PlatformUser newUser = new PlatformUser();
 			newUser.setUsername(email);
 			newUser.setEmail(email);
 			if (clientName.equalsIgnoreCase("FACEBOOK")) {
@@ -44,19 +52,18 @@ public class UserServiceImpl implements UserService {
 				newUser.setLastName((String) attributes.get("family_name"));
 				newUser.setFirstName((String) attributes.get("given_name"));
 			}
-			newUser.setAuthType(AuthenticationType.valueOf(clientName.toUpperCase()));
-			newUser.setRole(Role.MEMBER);
+			newUser.setAuthenticationType(AuthenticationType.valueOf(clientName.toUpperCase()));
 			userRepository.save(newUser);
 		}
 	}
 
 	@Override
-	public void save(User user) {
+	public void save(PlatformUser user) {
 		userRepository.save(user);
 	}
 
 	@Override
-	public User findById(long id) {
+	public PlatformUser findById(long id) {
 		return userRepository.findById(id).orElseThrow(() -> new UserNotFound(id));
 	}
 
@@ -64,7 +71,8 @@ public class UserServiceImpl implements UserService {
 	public boolean updateRole(long userId, String role) {
 		try {
 			userRepository.findById(userId).ifPresent(user -> {
-				user.setRole(Role.valueOf(role));
+				//FIXME needs to be fixed
+				//user.setRole(Role.valueOf(role));
 				userRepository.save(user);
 			});
 		} catch (HttpClientErrorException | IllegalArgumentException e) {
@@ -75,8 +83,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void updateUsername(String oldUsername, String newUsername) {
-		if (exists(newUsername)) throw new UsernameAlreadyExistsException(newUsername);
-		User user = userRepository.findByUsername(oldUsername).orElseThrow(() -> new UsernameNotFoundException(oldUsername));
+		if (checkIfUserExists(newUsername)) throw new UsernameAlreadyExistsException(newUsername);
+		PlatformUser user = userRepository.findByUsername(oldUsername).orElseThrow(() -> new UsernameNotFoundException(oldUsername));
 		user.setUsername(newUsername);
 		userRepository.save(user);
 	}
@@ -85,32 +93,73 @@ public class UserServiceImpl implements UserService {
 	public void create(UserRegisterViewModel userViewModel) {
 		logger.debug("Saving user");
 		userViewModel.setPassword(passwordEncoder.encode(userViewModel.getPassword()));
-		userRepository.save(modelMapper.map(userViewModel, User.class));
+		userRepository.save(modelMapper.map(userViewModel, PlatformUser.class));
 	}
 
 	@Override
-	public List<User> findAllUsers() {
+	public List<PlatformUser> findAllUsers() {
 		logger.debug("Getting all users");
 		return userRepository.findAll();
 	}
 
 	public void save(UserRegisterViewModel user) {
-		userRepository.save(modelMapper.map(user, User.class));
+		userRepository.save(modelMapper.map(user, PlatformUser.class));
 	}
 
 	@Override
-	public User findByUsername(String username) {
+	public PlatformUser findUserByUsername(String username) {
 		return userRepository.findByUsername(username)
 		                     .orElseThrow(() -> new UserNotFound(username));
 	}
 
 	@Override
-	public List<User> findAllWithIdeas() {
+	public PlatformUser findWithSubscriptionsAndYouthCouncils(String username) {
+		PlatformUser user = userRepository.findWithSubscriptions(username)
+		                                  .orElseThrow(() -> new UsernameNotFoundException(String.format("User %s not found", username)));
+		user.getYouthCouncilSubscriptions().forEach(s -> {
+			YouthCouncilSubscription youthCouncilSubscription = youthCouncilSubscriptionRepository.findWithYouthCouncil(s.getYouthCouncilSubscriptionId())
+			                                                                                      .orElseThrow(() -> new YouthCouncilSubscriptionNotFoundException(s.getYouthCouncilSubscriptionId()));
+			s.setYouthCouncil(youthCouncilSubscription.getYouthCouncil());
+		});
+		System.out.println(user);
+		return user;
+	}
+
+	@Override
+	public GeneralAdmin findAdminByUsername(String username) {
+		return adminRepository.findByUsername(username)
+		                      .orElseThrow(() -> new UsernameNotFoundException(String.format("User %s not found", username)));
+	}
+
+	@Override
+	public Authenticable findAuthenticableByUsername(String username) {
+		Optional<GeneralAdmin> possibleAdmin = adminRepository.findByUsername(username);
+		if (possibleAdmin.isPresent()) return possibleAdmin.get();
+		return userRepository.findByUsername(username)
+		                     .orElseThrow(() -> new UsernameNotFoundException("The username could not be found!"));
+	}
+
+	@Override
+	public List<PlatformUser> findAllWithIdeas() {
 		return userRepository.findAllWithIdeas();
 	}
 
 	@Override
-	public boolean exists(String username) {
+	public boolean checkIfAuthenticableExists(String username) {
+		Optional<PlatformUser> possibleUser = userRepository.findByUsername(username);
+		if (possibleUser.isPresent()) return true;
+		Optional<GeneralAdmin> possibleAdmin = adminRepository.findByUsername(username);
+		return possibleAdmin.isPresent();
+	}
+
+	@Override
+	public boolean checkIfUserExists(String username) {
 		return userRepository.findByUsername(username).isPresent();
 	}
+
+	@Override
+	public boolean checkIfAdminExists(String username) {
+		return adminRepository.findByUsername(username).isPresent();
+	}
+
 }

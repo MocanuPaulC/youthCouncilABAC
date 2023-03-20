@@ -3,14 +3,13 @@
 	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	  xmlns:th="http://www.thymeleaf.org">
 <head>
-
 	<title th:text="${youthCouncil.getMunicipality()}"></title>
 	<th:block th:insert="~{includes::head_fragment}"></th:block>
 	<script defer th:src="@{/js/launchCallForIdeas.js}" type="module"></script>
 	<script defer th:src="@{/js/youthCouncil.js}" type="module"></script>
 </head>
 <body class="m-3" th:attr="data-youthcouncil_id=${youthCouncil.getId()}">
-<th:block th:insert="~{includes::navbar(${authUser}, 'youthcouncil')}"></th:block>
+<th:block th:insert="~{includes::navbar(${authUser}, ${authAdmin},  'youthcouncil')}"></th:block>
 <h1 th:text="${youthCouncil.getCouncilName()}"></h1>
 <p th:text="${youthCouncil.getDescription()}"></p>
 <a class="btn btn-dark"

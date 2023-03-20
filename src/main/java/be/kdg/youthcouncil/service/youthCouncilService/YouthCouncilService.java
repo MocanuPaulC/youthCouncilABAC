@@ -1,10 +1,10 @@
 package be.kdg.youthcouncil.service.youthCouncilService;
 
 import be.kdg.youthcouncil.controllers.mvc.viewModels.NewYouthCouncilViewModel;
-import be.kdg.youthcouncil.domain.moduleItems.ActionPoint;
-import be.kdg.youthcouncil.domain.user.User;
-import be.kdg.youthcouncil.domain.youthCouncil.InformativePage;
-import be.kdg.youthcouncil.domain.youthCouncil.YouthCouncil;
+import be.kdg.youthcouncil.domain.users.PlatformUser;
+import be.kdg.youthcouncil.domain.youthcouncil.YouthCouncil;
+import be.kdg.youthcouncil.domain.youthcouncil.modules.ActionPoint;
+import be.kdg.youthcouncil.domain.youthcouncil.modules.InformativePage;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public interface YouthCouncilService {
 	List<ActionPoint> getFilteredActionPoints(String municipality, String theme, String label);
 
 
-	List<User> getAllMembers(String municipality);
+	List<PlatformUser> getAllMembers(String municipality);
 
 	void save(YouthCouncil youthCouncil);
 

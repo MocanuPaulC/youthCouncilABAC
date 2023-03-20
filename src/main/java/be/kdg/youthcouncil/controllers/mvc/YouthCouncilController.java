@@ -7,7 +7,7 @@ import be.kdg.youthcouncil.controllers.mvc.viewModels.*;
 import be.kdg.youthcouncil.domain.moduleItems.Idea;
 import be.kdg.youthcouncil.domain.moduleItems.Label;
 import be.kdg.youthcouncil.domain.youthCouncil.InformativePage;
-import be.kdg.youthcouncil.domain.youthCouncil.YouthCouncil;
+import be.kdg.youthcouncil.domain.youthcouncil.modules.YouthCouncil;
 import be.kdg.youthcouncil.service.callForIdeaService.CallForIdeaService;
 import be.kdg.youthcouncil.service.announcementService.AnnouncementService;
 import be.kdg.youthcouncil.service.informativePageService.InformativePageService;
@@ -35,7 +35,6 @@ public class YouthCouncilController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	private final ModelMapper modelMapper;
-	private final ModuleItemService moduleItemService;
 
 	private final YouthCouncilService youthCouncilService;
 	private final UserService userService;

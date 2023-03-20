@@ -1,13 +1,14 @@
 package be.kdg.youthcouncil.service.youthCouncilService;
 
 import be.kdg.youthcouncil.controllers.mvc.viewModels.NewYouthCouncilViewModel;
-import be.kdg.youthcouncil.domain.moduleItems.ActionPoint;
-import be.kdg.youthcouncil.domain.user.User;
-import be.kdg.youthcouncil.domain.youthCouncil.InformativePage;
-import be.kdg.youthcouncil.domain.youthCouncil.YouthCouncil;
+import be.kdg.youthcouncil.domain.users.PlatformUser;
+import be.kdg.youthcouncil.domain.youthcouncil.YouthCouncil;
+import be.kdg.youthcouncil.domain.youthcouncil.modules.ActionPoint;
+import be.kdg.youthcouncil.domain.youthcouncil.modules.InformativePage;
+import be.kdg.youthcouncil.domain.youthcouncil.subscriptions.YouthCouncilSubscription;
 import be.kdg.youthcouncil.exceptions.MunicipalityNotFound;
 import be.kdg.youthcouncil.persistence.UserRepository;
-import be.kdg.youthcouncil.persistence.YouthCouncilRepository;
+import be.kdg.youthcouncil.persistence.youthcouncil.YouthCouncilRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -35,28 +36,13 @@ public class YouthCouncilServiceImpl implements YouthCouncilService {
 	}
 
 	@Override
-	public List<User> getAllMembers(String municipality) {
-		List<User> membersToReturn = new ArrayList<>();
+	public List<PlatformUser> getAllMembers(String municipality) {
+		List<PlatformUser> membersToReturn = new ArrayList<>();
 		try {
-			List<User> allUsers = userRepository.findAllWithIdeas();
-			List<User> councilMembers =
-					youthCouncilRepository.findByMunicipalityNameWithCouncilMembers(municipality)
-					                      .orElseThrow(() -> new MunicipalityNotFound("The YouthCouncil " + municipality + "  could not be found!"))
-					                      .getCouncilMembers();
-			List<User> councilAdmins =
-					youthCouncilRepository.findByMunicipalityNameWithCouncilAdmins(municipality)
-					                      .orElseThrow(() -> new MunicipalityNotFound("The YouthCouncil " + municipality + "  could not be found!"))
-					                      .getCouncilAdmins();
-
-			for (User user : allUsers) {
-
-				if (councilMembers.contains(user)) {
-					membersToReturn.add(user);
-				}
-				if (councilAdmins.contains(user)) {
-					membersToReturn.add(user);
-				}
-			}
+			membersToReturn = youthCouncilRepository.findSubscribersByMunicipality(municipality)
+			                                       .stream()
+			                                       .map(YouthCouncilSubscription::getSubscriber)
+			                                       .toList();
 		} catch (NullPointerException e) {
 			logger.debug("No members found for youth council of municipality: " + municipality);
 		}
@@ -108,7 +94,7 @@ public class YouthCouncilServiceImpl implements YouthCouncilService {
 	@Override
 	public List<InformativePage> getAllInformativePages(String municipality) {
 		logger.debug("Getting all Informative pages for youth council: " + municipality + "!");
-		Optional<YouthCouncil> possibleYouthCouncil = youthCouncilRepository.getYouthCouncilWithInformativePages(municipality);
+		Optional<YouthCouncil> possibleYouthCouncil = youthCouncilRepository.getWithInformativePages(municipality);
 		if (possibleYouthCouncil.isEmpty())
 			throw new MunicipalityNotFound("The youth-council for the municipality " + municipality + " could not be found.");
 		return possibleYouthCouncil.get().getInformativePages();

@@ -1,6 +1,5 @@
 package be.kdg.youthcouncil.controllers.api.dto;
 
-import be.kdg.youthcouncil.domain.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +17,5 @@ public class UserResponseDto {
 	private String lastName;
 	private String email;
 	private String postcode;
-	private Role role;
 
 }

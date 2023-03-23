@@ -61,6 +61,14 @@
 					</li>
 					<li>
 						<a class="btn"
+						   th:classappend="${page == 'actionPoints' ? 'btn-light' : 'btn-dark'}"
+						   th:href="@{/actionPoints}"
+						   type="button">
+							ActionPoint
+						</a>
+					</li>
+					<li>
+						<a class="btn"
 						   sec:authorize="hasRole('ROLE_GENERAL_ADMIN')"
 						   th:classappend="${page == 'all-users' ? 'btn-light' : 'btn-dark'}"
 						   th:href="@{/users}"

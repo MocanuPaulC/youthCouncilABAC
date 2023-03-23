@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<th:block th:insert="~{includes::head_fragment}"></th:block>
+	<meta charset="UTF-8">
+	<title>ActionPoints</title>
+	<script src="/js/searchByLabel.js" defer></script>
+</head>
+
+<body>
+<nav th:insert="~{includes::navbar(${authUser}, 'actionPoints')}"></nav>
+
+<main>
+	<div class="container">
+		<input type="search" placeholder="find action point" class="search_input action_point">
+		<div class="row">
+			<h2 class="text-center">Action Points</h2>
+			<hr>
+			<div id="items" class="col-1">
+				<div class="tr" th:each="actionPoint: ${allActionPoints}" > <!--th:id="'actionPoint_'+${actionPoint.id}"-->
+					<div class="d-flex p-1 ">
+						<a  th:text="${actionPoint.label.name}" class="table-link nav-link"></a>
+					</div>
+					<hr>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</main>
+<footer>
+	<div>&copy; 2023 Youth council template</div>
+</footer>
+</body>
+
+</html>

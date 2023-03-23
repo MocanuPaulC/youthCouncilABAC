@@ -7,4 +7,4 @@ spring:
         driver-class-name: org.postgresql.Driver
         url: jdbc:postgresql://localhost:5432/YouthCouncil
         username: postgres
-        password: postgres
+        password: ${your_password}

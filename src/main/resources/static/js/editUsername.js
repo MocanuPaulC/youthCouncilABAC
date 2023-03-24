@@ -64,5 +64,8 @@ function handleUsernameEditResponse(response) {
 
 	//TODO do something with the response
 	response.json().then(x => console.log(x.response));
-	handleUsernameEditCancel();
+	usernameDisplay.setAttribute("contenteditable", "false");
+	usernameEditButton.classList.remove("d-none");
+	usernameSaveButton.classList.add("d-none");
+	usernameCancelButton.classList.add("d-none");
 }

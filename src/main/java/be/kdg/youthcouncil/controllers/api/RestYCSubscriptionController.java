@@ -1,31 +1,34 @@
 package be.kdg.youthcouncil.controllers.api;
 
-import be.kdg.youthcouncil.controllers.api.dto.CallForIdeasDTO;
+import be.kdg.youthcouncil.domain.youthcouncil.YouthCouncil;
 import be.kdg.youthcouncil.service.callForIdeaService.CallForIdeaService;
 import be.kdg.youthcouncil.service.userService.UserService;
 import be.kdg.youthcouncil.service.youthCouncilService.YouthCouncilService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping ("/api/youthcouncils")
-public class RestYouthCouncilController {
+@RequestMapping ("/api/ycsubscriptions")
+public class RestYCSubscriptionController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private final YouthCouncilService youthCouncilService;
 	private final CallForIdeaService callForIdeaService;
 
 	private final UserService userService;
 
+	@PostMapping ()
+	public void addSubscription(@Valid @RequestBody ) {
 
-	@PostMapping ("/{id}/callforideas")
-	public ResponseEntity<CallForIdeasDTO> launchCallForIdeas(@PathVariable Long id, @Valid @RequestBody CallForIdeasDTO callForIdeasDTO) {
-		callForIdeaService.create(callForIdeasDTO);
-		return ResponseEntity.ok(callForIdeasDTO);
+		logger.debug("Adding user +" + model.getAttribute("authUser") + " to youth council " + youthCouncilId);
+		YouthCouncil youthCouncil = youthCouncilService.findByIdWithMembers(youthCouncilId);
+		youthCouncil.addCouncilMember(userService.findById(userId));
+		youthCouncilService.save(youthCouncil);
 	}
+
 }

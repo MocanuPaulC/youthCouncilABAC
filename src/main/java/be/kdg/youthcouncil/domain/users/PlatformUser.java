@@ -1,7 +1,9 @@
 package be.kdg.youthcouncil.domain.users;
 
-import be.kdg.youthcouncil.domain.youthcouncil.interactions.Reaction;
-import be.kdg.youthcouncil.domain.youthcouncil.interactions.Share;
+import be.kdg.youthcouncil.domain.youthcouncil.interactions.ActionPointReaction;
+import be.kdg.youthcouncil.domain.youthcouncil.interactions.ActionPointShare;
+import be.kdg.youthcouncil.domain.youthcouncil.interactions.IdeaReaction;
+import be.kdg.youthcouncil.domain.youthcouncil.interactions.IdeaShare;
 import be.kdg.youthcouncil.domain.youthcouncil.modules.Idea;
 import be.kdg.youthcouncil.domain.youthcouncil.subscriptions.ActionPointSubscription;
 import be.kdg.youthcouncil.domain.youthcouncil.subscriptions.BlockedUser;
@@ -15,8 +17,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString (exclude = {"reactions", "shares", "youthCouncilSubscriptions", "actionPointSubscriptions", "blockedYouthCouncils", "ideas"})
-@EqualsAndHashCode (exclude = {"reactions", "shares", "youthCouncilSubscriptions", "actionPointSubscriptions", "blockedYouthCouncils", "ideas"})
+@ToString (exclude = {"actionPointReactions", "actionPointShares", "ideaReactions", "ideaShares", "youthCouncilSubscriptions", "actionPointSubscriptions", "blockedYouthCouncils", "ideas"})
+@EqualsAndHashCode (exclude = {"actionPointReactions", "actionPointShares", "ideaReactions", "ideaShares", "youthCouncilSubscriptions", "actionPointSubscriptions", "blockedYouthCouncils", "ideas"})
 @Entity
 @Table (name = "platform_users")
 public class PlatformUser implements Authenticable {
@@ -36,17 +38,22 @@ public class PlatformUser implements Authenticable {
 	private String password;
 	@Getter (AccessLevel.NONE)
 	private AuthenticationType authenticationType;
-	@OneToMany(fetch = FetchType.LAZY)
-	private List<Reaction> reactions;
-	@OneToMany(fetch = FetchType.LAZY)
-	private List<Share> shares;
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany (fetch = FetchType.LAZY)
+	private List<ActionPointReaction> actionPointReactions;
+	@OneToMany (fetch = FetchType.LAZY)
+	private List<ActionPointShare> actionPointShares;
+
+	@OneToMany (fetch = FetchType.LAZY)
+	private List<IdeaReaction> ideaReactions;
+	@OneToMany (fetch = FetchType.LAZY)
+	private List<IdeaShare> ideaShares;
+	@OneToMany (fetch = FetchType.LAZY)
 	private List<YouthCouncilSubscription> youthCouncilSubscriptions;
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany (fetch = FetchType.LAZY)
 	private List<ActionPointSubscription> actionPointSubscriptions;
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany (fetch = FetchType.LAZY)
 	private List<BlockedUser> blockedYouthCouncils;
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany (fetch = FetchType.LAZY)
 	private List<Idea> ideas;
 
 	public PlatformUser(String firstName, String lastName, String email, String postcode, String username, String password) {

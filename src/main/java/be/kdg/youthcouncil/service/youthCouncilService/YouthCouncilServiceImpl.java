@@ -7,7 +7,8 @@ import be.kdg.youthcouncil.domain.youthcouncil.modules.ActionPoint;
 import be.kdg.youthcouncil.domain.youthcouncil.modules.InformativePage;
 import be.kdg.youthcouncil.domain.youthcouncil.subscriptions.YouthCouncilSubscription;
 import be.kdg.youthcouncil.exceptions.MunicipalityNotFound;
-import be.kdg.youthcouncil.persistence.UserRepository;
+import be.kdg.youthcouncil.exceptions.YouthCouncilSubscriptionNotFoundException;
+import be.kdg.youthcouncil.persistence.users.UserRepository;
 import be.kdg.youthcouncil.persistence.youthcouncil.YouthCouncilRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -40,9 +41,9 @@ public class YouthCouncilServiceImpl implements YouthCouncilService {
 		List<PlatformUser> membersToReturn = new ArrayList<>();
 		try {
 			membersToReturn = youthCouncilRepository.findSubscribersByMunicipality(municipality)
-			                                       .stream()
-			                                       .map(YouthCouncilSubscription::getSubscriber)
-			                                       .toList();
+			                                        .stream()
+			                                        .map(YouthCouncilSubscription::getSubscriber)
+			                                        .toList();
 		} catch (NullPointerException e) {
 			logger.debug("No members found for youth council of municipality: " + municipality);
 		}
@@ -87,8 +88,8 @@ public class YouthCouncilServiceImpl implements YouthCouncilService {
 
 	@Override
 	public YouthCouncil findByIdWithMembers(long youthCouncilId) {
-		return youthCouncilRepository.findByIdWithCouncilMembers(youthCouncilId)
-		                             .orElseThrow(() -> new MunicipalityNotFound("The youth-council for the municipality " + youthCouncilId + " could not be found."));
+		return youthCouncilRepository.findWithSubscriptions(youthCouncilId)
+		                             .orElseThrow(() -> new YouthCouncilSubscriptionNotFoundException(youthCouncilId));
 	}
 
 	@Override

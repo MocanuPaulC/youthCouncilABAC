@@ -6,10 +6,10 @@ import be.kdg.youthcouncil.domain.users.AuthenticationType;
 import be.kdg.youthcouncil.domain.users.GeneralAdmin;
 import be.kdg.youthcouncil.domain.users.PlatformUser;
 import be.kdg.youthcouncil.domain.youthcouncil.subscriptions.YouthCouncilSubscription;
+import be.kdg.youthcouncil.exceptions.UserNotFoundException;
+import be.kdg.youthcouncil.exceptions.UsernameAlreadyExistsException;
 import be.kdg.youthcouncil.exceptions.YouthCouncilSubscriptionNotFoundException;
 import be.kdg.youthcouncil.persistence.users.AdminRepository;
-import be.kdg.youthcouncil.exceptions.UserNotFound;
-import be.kdg.youthcouncil.exceptions.UsernameAlreadyExistsException;
 import be.kdg.youthcouncil.persistence.users.UserRepository;
 import be.kdg.youthcouncil.persistence.youthcouncil.subscriptions.YouthCouncilSubscriptionRepository;
 import lombok.AllArgsConstructor;
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public PlatformUser findById(long id) {
-		return userRepository.findById(id).orElseThrow(() -> new UserNotFound(id));
+		return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 	}
 
 	@Override
@@ -84,7 +84,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updateUsername(String oldUsername, String newUsername) {
 		if (checkIfUserExists(newUsername)) throw new UsernameAlreadyExistsException(newUsername);
-		PlatformUser user = userRepository.findByUsername(oldUsername).orElseThrow(() -> new UsernameNotFoundException(oldUsername));
+		PlatformUser user = userRepository.findByUsername(oldUsername)
+		                                  .orElseThrow(() -> new UsernameNotFoundException(oldUsername));
 		user.setUsername(newUsername);
 		userRepository.save(user);
 	}
@@ -109,7 +110,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public PlatformUser findUserByUsername(String username) {
 		return userRepository.findByUsername(username)
-		                     .orElseThrow(() -> new UserNotFound(username));
+		                     .orElseThrow(() -> new UserNotFoundException(username));
 	}
 
 	@Override

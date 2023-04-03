@@ -1,6 +1,6 @@
 package be.kdg.youthcouncil.controllers.api.dto;
 
-import be.kdg.youthcouncil.domain.moduleItems.Label;
+import be.kdg.youthcouncil.domain.youthcouncil.modules.ActionPointStatus;
 import lombok.*;
 
 @Getter
@@ -14,5 +14,5 @@ public class EditActionPointDto {
 	private String title;
 	private String description;
 
-	private Label label;
+	private ActionPointStatus status;
 }

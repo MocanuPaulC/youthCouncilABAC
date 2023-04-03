@@ -22,7 +22,7 @@ public abstract class Media {
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private long mediaId;
 
-	String getPath() {
+	public String getPath() {
 		return path;
 	}
 

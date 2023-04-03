@@ -1,7 +1,7 @@
 package be.kdg.youthcouncil.service.announcementService;
 
 import be.kdg.youthcouncil.controllers.mvc.viewModels.NewAnnoucementViewModel;
-import be.kdg.youthcouncil.domain.moduleItems.Announcement;
+import be.kdg.youthcouncil.domain.youthcouncil.modules.Announcement;
 
 import java.util.List;
 

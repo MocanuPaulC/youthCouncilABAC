@@ -1,11 +1,11 @@
 package be.kdg.youthcouncil.service.announcementService;
 
 import be.kdg.youthcouncil.controllers.mvc.viewModels.NewAnnoucementViewModel;
-import be.kdg.youthcouncil.domain.moduleItems.Announcement;
-import be.kdg.youthcouncil.domain.youthCouncil.YouthCouncil;
+import be.kdg.youthcouncil.domain.youthcouncil.YouthCouncil;
+import be.kdg.youthcouncil.domain.youthcouncil.modules.Announcement;
 import be.kdg.youthcouncil.exceptions.MunicipalityNotFound;
 import be.kdg.youthcouncil.persistence.AnnouncementRepository;
-import be.kdg.youthcouncil.persistence.YouthCouncilRepository;
+import be.kdg.youthcouncil.persistence.youthcouncil.YouthCouncilRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -41,7 +41,7 @@ public class AnnouncmentServiceImpl implements AnnouncementService {
 		                                                  .orElseThrow(() -> new MunicipalityNotFound("The municipality " + municipality + "could not be found!"));
 		Announcement announcement = modelMapper.map(announcementViewModel, Announcement.class);
 
-		youthCouncil.addAnnouncement(announcement);
+		youthCouncil.getAnnouncements().add(announcement); //FIXME please make me prettier
 		announcement.setOwningYouthCouncil(youthCouncil);
 
 		announcement = announcementRepository.save(announcement);

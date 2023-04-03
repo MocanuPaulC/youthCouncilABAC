@@ -1,19 +1,17 @@
 package be.kdg.youthcouncil.persistence.youthcouncil;
 
 import be.kdg.youthcouncil.domain.youthcouncil.YouthCouncil;
-import be.kdg.youthcouncil.domain.youthcouncil.subscriptions.YouthCouncilSubscription;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface YouthCouncilRepository extends JpaRepository<YouthCouncil, Long> {
 
 	@Query ("select yc from YouthCouncil yc where yc.municipality = (:municipality)")
-	YouthCouncil findByMunicipalityName(String municipality);
+	Optional<YouthCouncil> findByMunicipalityName(String municipality);
 
 	@Query (
 			"SELECT yc FROM YouthCouncil yc " +
@@ -37,12 +35,25 @@ public interface YouthCouncilRepository extends JpaRepository<YouthCouncil, Long
 					"JOIN FETCH y.councilMembers " +
 					"WHERE y.municipality = (:municipality)"
 	)*/
+
 	@Query (
-			"select s from YouthCouncilSubscription s " +
-					"join fetch s.subscriber " +
-					"where s.youthCouncil.municipality = :municipality"
+			""" 
+					SELECT yc FROM YouthCouncil yc 
+					JOIN FETCH yc.subscriptions 
+					WHERE yc.municipality = :municipality
+					"""
 	)
-	List<YouthCouncilSubscription> findSubscribersByMunicipality(String municipality);
+	Optional<YouthCouncil> findWithSubscriptions(String municipality);
+
+
+	@Query (
+			""" 
+					SELECT yc FROM YouthCouncil yc 
+					JOIN FETCH yc.subscriptions 
+					WHERE yc.youthCouncilId = :youthCouncilId
+					"""
+	)
+	Optional<YouthCouncil> findWithSubscriptions(long youthCouncilId);
 
 	@Query (
 			"SELECT s FROM YouthCouncilSubscription s " +
@@ -50,6 +61,6 @@ public interface YouthCouncilRepository extends JpaRepository<YouthCouncil, Long
 					"WHERE s.youthCouncil.municipality = :municipality " +
 					"AND s.role = 0"
 	)
-	YouthCouncil findAdminsByMunicipality(String municipality);
+	Optional<YouthCouncil> findAdminsByMunicipality(String municipality);
 
 }

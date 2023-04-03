@@ -28,6 +28,8 @@ public class YouthCouncilSubscription {
 	@OneToOne (fetch = FetchType.EAGER)
 	@JoinColumn (name = "youth_council", nullable = false)
 	private YouthCouncil youthCouncil;
+
+	
 	private SubscriptionRole role;
 
 	public YouthCouncilSubscription(PlatformUser subscriber, YouthCouncil youthCouncil, SubscriptionRole role) {

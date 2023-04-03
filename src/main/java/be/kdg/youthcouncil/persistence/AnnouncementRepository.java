@@ -1,6 +1,6 @@
 package be.kdg.youthcouncil.persistence;
 
-import be.kdg.youthcouncil.domain.moduleItems.Announcement;
+import be.kdg.youthcouncil.domain.youthcouncil.modules.Announcement;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

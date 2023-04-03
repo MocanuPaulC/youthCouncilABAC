@@ -4,14 +4,13 @@ package be.kdg.youthcouncil.controllers.mvc;
 import be.kdg.youthcouncil.config.security.annotations.CAOnly;
 import be.kdg.youthcouncil.config.security.annotations.GAOnly;
 import be.kdg.youthcouncil.controllers.mvc.viewModels.*;
-import be.kdg.youthcouncil.domain.moduleItems.Idea;
-import be.kdg.youthcouncil.domain.moduleItems.Label;
-import be.kdg.youthcouncil.domain.youthCouncil.InformativePage;
-import be.kdg.youthcouncil.domain.youthcouncil.modules.YouthCouncil;
-import be.kdg.youthcouncil.service.callForIdeaService.CallForIdeaService;
+import be.kdg.youthcouncil.domain.youthcouncil.YouthCouncil;
+import be.kdg.youthcouncil.domain.youthcouncil.modules.ActionPointStatus;
+import be.kdg.youthcouncil.domain.youthcouncil.modules.Idea;
+import be.kdg.youthcouncil.domain.youthcouncil.modules.InformativePage;
 import be.kdg.youthcouncil.service.announcementService.AnnouncementService;
+import be.kdg.youthcouncil.service.callForIdeaService.CallForIdeaService;
 import be.kdg.youthcouncil.service.informativePageService.InformativePageService;
-import be.kdg.youthcouncil.service.moduleItemService.ModuleItemService;
 import be.kdg.youthcouncil.service.userService.UserService;
 import be.kdg.youthcouncil.service.youthCouncilService.YouthCouncilService;
 import lombok.AllArgsConstructor;
@@ -148,7 +147,7 @@ public class YouthCouncilController {
 		YouthCouncil youthCouncil = youthCouncilService.findByMunicipality(municipality);
 		try {
 			model.addAttribute("actionPoint", youthCouncil.getActionPoint(actionpointid));
-			model.addAttribute("labels", Label.values());
+			model.addAttribute("labels", ActionPointStatus.values());
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 			//			model.addAttribute("youthCouncil", youthCouncil);

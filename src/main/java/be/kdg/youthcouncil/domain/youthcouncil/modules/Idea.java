@@ -26,25 +26,25 @@ public class Idea {
 
 	private String idea;
 	@ManyToOne
-	private SubTheme theme;
+	private SubTheme subTheme;
 	@OneToOne
 	private Image image;
 	@ManyToOne
-	private PlatformUser owningUser;
+	private PlatformUser user;
 
 	@ManyToOne
-	private CallForIdea owningCallForIdeas;
+	private CallForIdea callForIdeas;
 
 	@OneToMany (fetch = FetchType.LAZY)
 	private List<IdeaShare> shares;
 	@OneToMany (fetch = FetchType.LAZY)
 	private List<IdeaReaction> reactions;
 
-	public Idea(String idea, SubTheme theme, Image image, PlatformUser owningUser, CallForIdea owningCallForIdeas) {
+	public Idea(String idea, SubTheme subTheme, Image image, PlatformUser user, CallForIdea callForIdeas) {
 		this.idea = idea;
-		this.theme = theme;
+		this.subTheme = subTheme;
 		this.image = image;
-		this.owningUser = owningUser;
-		this.owningCallForIdeas = owningCallForIdeas;
+		this.user = user;
+		this.callForIdeas = callForIdeas;
 	}
 }

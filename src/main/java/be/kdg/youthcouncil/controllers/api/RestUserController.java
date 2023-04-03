@@ -1,13 +1,8 @@
 package be.kdg.youthcouncil.controllers.api;
 
 import be.kdg.youthcouncil.config.security.annotations.CAOnly;
-import be.kdg.youthcouncil.controllers.api.DTOs.UpdateUserRoleDTO;
-import be.kdg.youthcouncil.controllers.api.DTOs.UserDTO;
-import be.kdg.youthcouncil.controllers.api.dto.RequestResetPasswordDto;
-import be.kdg.youthcouncil.controllers.api.dto.UserResponseDto;
-import be.kdg.youthcouncil.domain.users.PlatformUser;
 import be.kdg.youthcouncil.controllers.api.dto.*;
-import be.kdg.youthcouncil.domain.user.User;
+import be.kdg.youthcouncil.domain.users.PlatformUser;
 import be.kdg.youthcouncil.exceptions.UsernameAlreadyExistsException;
 import be.kdg.youthcouncil.service.userService.UserService;
 import lombok.AllArgsConstructor;
@@ -64,9 +59,9 @@ public class RestUserController {
 		return ResponseEntity.ok(modelMapper.map(user, UserResponseDto.class));
 	}
 
-	@PatchMapping("/{userId}/username")
+	@PatchMapping ("/{userId}/username")
 	public ResponseEntity<ChangeUsernameDTO> changeUsername(@PathVariable long userId, @Valid @RequestBody RequestChangeUsernameDTO requestChangeUsernameDTO, Principal principal) {
-		User user = userService.findByUsername(principal.getName());
+		PlatformUser user = userService.findUserByUsername(principal.getName());
 
 		if (userId != user.getId()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 

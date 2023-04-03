@@ -1,11 +1,11 @@
 package be.kdg.youthcouncil.controllers.api;
 
-import be.kdg.youthcouncil.controllers.api.dto.IdeaDTO;
-import be.kdg.youthcouncil.controllers.api.dto.NewIdeaDTO;
+import be.kdg.youthcouncil.controllers.api.dto.youthcouncil.modules.IdeaDTO;
+import be.kdg.youthcouncil.controllers.api.dto.youthcouncil.modules.NewIdeaDTO;
 import be.kdg.youthcouncil.domain.youthcouncil.modules.Idea;
-import be.kdg.youthcouncil.service.callForIdeaService.CallForIdeaService;
-import be.kdg.youthcouncil.service.callForIdeaService.IdeaService;
-import be.kdg.youthcouncil.service.userService.UserService;
+import be.kdg.youthcouncil.service.youthcouncil.modules.CallForIdeaService;
+import be.kdg.youthcouncil.service.youthcouncil.modules.IdeaService;
+import be.kdg.youthcouncil.service.users.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

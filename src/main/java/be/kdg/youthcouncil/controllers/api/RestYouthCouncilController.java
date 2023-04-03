@@ -1,9 +1,9 @@
 package be.kdg.youthcouncil.controllers.api;
 
-import be.kdg.youthcouncil.controllers.api.dto.CallForIdeasDTO;
-import be.kdg.youthcouncil.service.callForIdeaService.CallForIdeaService;
-import be.kdg.youthcouncil.service.userService.UserService;
-import be.kdg.youthcouncil.service.youthCouncilService.YouthCouncilService;
+import be.kdg.youthcouncil.controllers.api.dto.youthcouncil.modules.CallForIdeasDTO;
+import be.kdg.youthcouncil.service.youthcouncil.modules.CallForIdeaService;
+import be.kdg.youthcouncil.service.users.UserService;
+import be.kdg.youthcouncil.service.youthcouncil.YouthCouncilService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

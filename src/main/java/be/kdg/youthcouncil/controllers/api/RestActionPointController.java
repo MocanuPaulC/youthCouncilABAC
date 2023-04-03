@@ -1,8 +1,8 @@
 package be.kdg.youthcouncil.controllers.api;
 
-import be.kdg.youthcouncil.controllers.api.dto.EditActionPointDto;
-import be.kdg.youthcouncil.service.actionPointService.ActionPointService;
-import be.kdg.youthcouncil.service.youthCouncilService.YouthCouncilService;
+import be.kdg.youthcouncil.controllers.api.dto.youthcouncil.modules.EditActionPointDto;
+import be.kdg.youthcouncil.service.youthcouncil.modules.ActionPointService;
+import be.kdg.youthcouncil.service.youthcouncil.YouthCouncilService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

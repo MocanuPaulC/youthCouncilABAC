@@ -4,7 +4,7 @@ import be.kdg.youthcouncil.domain.users.GeneralAdmin;
 import be.kdg.youthcouncil.domain.users.PlatformUser;
 import be.kdg.youthcouncil.config.security.CustomUserDetails;
 import be.kdg.youthcouncil.config.security.Oauth.CustomOAuth2User;
-import be.kdg.youthcouncil.service.userService.UserService;
+import be.kdg.youthcouncil.service.users.UserService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

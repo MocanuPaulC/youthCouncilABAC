@@ -4,7 +4,7 @@ import be.kdg.youthcouncil.config.security.annotations.GAOnly;
 import be.kdg.youthcouncil.controllers.mvc.viewModels.UserLogInViewModel;
 import be.kdg.youthcouncil.controllers.mvc.viewModels.UserRegisterViewModel;
 import be.kdg.youthcouncil.domain.users.PlatformUser;
-import be.kdg.youthcouncil.service.userService.UserService;
+import be.kdg.youthcouncil.service.users.UserService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

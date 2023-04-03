@@ -13,7 +13,7 @@ public class IdeaReaction {
 	private long reactionId;
 
 	@OneToOne
-	@JoinColumn (name = "reacted_on", nullable = false)
+	@JoinColumn (name = "idea_reacted_on", nullable = false)
 	private ActionPoint ideaReactedOn;
 	private Emoji reaction;
 	@OneToOne

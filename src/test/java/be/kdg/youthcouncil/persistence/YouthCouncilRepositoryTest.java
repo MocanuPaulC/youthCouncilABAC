@@ -3,6 +3,7 @@ package be.kdg.youthcouncil.persistence;
 import be.kdg.youthcouncil.domain.youthcouncil.YouthCouncil;
 import be.kdg.youthcouncil.domain.youthcouncil.modules.ActionPoint;
 import be.kdg.youthcouncil.domain.youthcouncil.subscriptions.YouthCouncilSubscription;
+import be.kdg.youthcouncil.persistence.media.MediaRepository;
 import be.kdg.youthcouncil.persistence.youthcouncil.YouthCouncilRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

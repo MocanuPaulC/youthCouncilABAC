@@ -10,7 +10,7 @@ import be.kdg.youthcouncil.domain.youthcouncil.modules.themes.Theme;
 import be.kdg.youthcouncil.domain.youthcouncil.subscriptions.ActionPointSubscription;
 import be.kdg.youthcouncil.domain.youthcouncil.subscriptions.SubscriptionRole;
 import be.kdg.youthcouncil.domain.youthcouncil.subscriptions.YouthCouncilSubscription;
-import be.kdg.youthcouncil.persistence.MediaRepository;
+import be.kdg.youthcouncil.persistence.media.MediaRepository;
 import be.kdg.youthcouncil.persistence.users.AdminRepository;
 import be.kdg.youthcouncil.persistence.users.UserRepository;
 import be.kdg.youthcouncil.persistence.youthcouncil.YouthCouncilRepository;
